@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tools | Dipak Lungeli</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+
+    header {
+      background-color: #0d47a1;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 1rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .intro {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    .tool {
+      background: white;
+      border-radius: 10px;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s;
+    }
+
+    .tool:hover {
+      transform: scale(1.02);
+    }
+
+    .tool h2 {
+      margin-top: 0;
+    }
+
+    .tool p {
+      margin-bottom: 0.5rem;
+    }
+
+    .tool a {
+      text-decoration: none;
+      color: #0d47a1;
+      font-weight: bold;
+    }
+
+    footer {
+      background-color: #002244;
+      color: white;
+      text-align: center;
+      padding: 1rem 0;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+      .tool {
+        padding: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Tools by Dipak Lungeli</h1>
+  </header>
+
+  <div class="container">
+    <p class="intro">
+      Welcome to my tools section! Here you will find some creative and helpful tools I have built for writers, artists, and curious minds.
+    </p>
+
+    <div class="tool">
+      <h2>Unicode Projector ✨</h2>
+      <p>
+        Unicode Projector ✨ is a simple and creative web tool that lets you style and display Unicode text with customizable font size, font style, text and background color, and scrolling animation ⏩. Instantly preview your design and download it as an image 🖼️ or text file 📄—perfect for social media posts, art, or presentations!
+      </p>
+      <a href="unicode.html">Open Tool</a>
+    </div>
+
+    <div class="tool">
+      <h2>Bar Length Equalizer</h2>
+      <p>Analyze your lyrics to ensure each line has equal rhythm and flow. Great for rap and lyrical writing.</p>
+      <a href="bar.html">Open Tool</a>
+    </div>
+
+    <div class="tool">
+      <h2>Accessible Notepad</h2>
+      <p>A simple, distraction-free notepad with screen-reader support and large fonts. Write without barriers.</p>
+      <a href="notepad.html">Open Tool</a>
+    </div>
+
+    <div class="tool">
+      <h2>Smart Text Analyzer</h2>
+      <p>Smart Text Analyzer is a powerful web tool designed to help users analyze and understand their text quickly and easily. It provides comprehensive metrics such as word count, character count (with and without spaces), sentence and paragraph counts, unique word frequency, estimated reading time, and a readability score to gauge the complexity of the text. Whether you’re a writer, student, or professional, this tool helps improve your writing by offering clear, actionable insights. Perfect for content editing, readability checking, and enhancing text clarity.</p>
+      <a href="smarttxt.html">Open Tool</a>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Dipak Lungeli — All Rights Reserved
+  </footer>
+
+  <script>
+    // =============================================
+    // START: Code for Page Time Tracking
+    const pageName = "Tools"; // यहाँ यो पेजको नाम राखिएको छ
+
+    let startTime = Date.now(); // पेज लोड हुने बित्तिकै समय नोट गर्नुहोस्।
+
+    // जब प्रयोगकर्ताले पेज छोड्छ (ब्राउजर बन्द गर्छ, अर्को पेजमा जान्छ, आदि)
+    window.addEventListener('beforeunload', () => {
+        const duration = Date.now() - startTime; // पेजमा बिताएको समय गणना गर्नुहोस्।
+        
+        // LocalStorage बाट पहिले नै बचत भएको समय ल्याउनुहोस् (यदि छ भने)
+        let existingTime = Number(localStorage.getItem(`page:${pageName}`)) || 0;
+        
+        // नयाँ समयलाई पहिलेको समयमा जोडेर बचत गर्नुहोस्।
+        localStorage.setItem(`page:${pageName}`, existingTime + duration);
+    });
+    // END: Code for Page Time Tracking
+    // =============================================
+  </script>
+</body>
+</html>

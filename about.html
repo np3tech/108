@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About - Dipak Lungeli</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f8f8;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #002244;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    nav {
+      margin-top: 10px;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #88ccff;
+      text-decoration: none;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 40px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      font-size: 36px;
+    }
+
+    h2 {
+      color: #002244;
+      margin-top: 35px;
+      margin-bottom: 20px;
+      font-size: 28px;
+    }
+
+    p {
+      line-height: 1.7;
+      text-align: left;
+      margin-top: 10px;
+      margin-bottom: 15px;
+    }
+
+    ul {
+      list-style: disc;
+      text-align: left;
+      margin-left: 20px;
+      padding-left: 0;
+    }
+
+    ul li {
+      margin-bottom: 8px;
+    }
+
+    footer {
+      background-color: #222;
+      color: #aaa;
+      text-align: center;
+      padding: 15px 0;
+      margin-top: 60px;
+      font-size: 0.9em;
+    }
+
+    @media (max-width: 768px) {
+      nav a {
+        display: block;
+        margin: 10px 0;
+      }
+
+      main {
+        padding: 25px;
+        margin: 20px auto;
+      }
+
+      h1 {
+        font-size: 30px;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 24px;
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+
+      p, ul li {
+        font-size: 15px;
+      }
+
+      main {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>About Me</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="projects.html">Projects</a>
+      <a href="tools.html">Tools</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Who Am I?</h2>
+    <p>I'm <strong>Dipak Lungeli</strong>, a multi-talented individual from Kawasoti, Nepal. I'm a passionate <strong>web developer</strong>, <strong>lyrical rapper</strong>, <strong>music producer</strong>, and <strong>writer</strong>. My journey blends creativity, culture, and code, aiming to express emotion and truth through technology and words.</p>
+
+    <h2>My Interests & Passions</h2>
+    <p>I am deeply interested in <strong>historical, philosophical, and spiritual subjects</strong>. Whether it's understanding ancient cultures or exploring futuristic AI systems, I love discovering knowledge that connects people across time and space. I believe in continuous learning and exploring the depths of human thought and technological advancement.</p>
+
+    <h2>Skills & Expertise</h2>
+    <p>As a developer, I primarily work with <strong>HTML, CSS, JavaScript, Python, and Lua</strong>. In music production, I leverage tools like <strong>FL Studio</strong> and <strong>REAPER</strong>. Additionally, I write engaging poems, ghazals, stories, and thought-provoking articles, sharing my content with my audience on platforms like YouTube and Facebook.</p>
+
+    <h2>My Vision</h2>
+    <p>I believe in using digital tools to <strong>empower expression and enhance accessibility</strong>. One of my core goals is to build software and experiences that are inclusive for visually impaired users, while also offering emotional and creative value through my writing and music. I envision a digital space where technology serves humanity's creative and communicative needs.</p>
+
+    <h2>Life Philosophy</h2>
+    <p>For me, <strong>curiosity is life's fuel</strong>. I live by the idea that "Expectation kills happiness," and instead, I focus on <strong>growth, exploration, and contributing something meaningful</strong> to the world around me. This philosophy guides my personal and professional pursuits, driving me to constantly learn, create, and inspire.</p>
+  </main>
+
+  <footer>
+    &copy; 2025 Dipak Lungeli — All Rights Reserved
+  </footer>
+
+  <script>
+    // =============================================
+    // START: Code for Page Time Tracking
+    const pageName = "About"; // यहाँ यो पेजको नाम राखिएको छ
+
+    let startTime = Date.now(); // पेज लोड हुने बित्तिकै समय नोट गर्नुहोस्।
+
+    // जब प्रयोगकर्ताले पेज छोड्छ (ब्राउजर बन्द गर्छ, अर्को पेजमा जान्छ, आदि)
+    window.addEventListener('beforeunload', () => {
+        const duration = Date.now() - startTime; // पेजमा बिताएको समय गणना गर्नुहोस्।
+        
+        // LocalStorage बाट पहिले नै बचत भएको समय ल्याउनुहोस् (यदि छ भने)
+        let existingTime = Number(localStorage.getItem(`page:${pageName}`)) || 0;
+        
+        // नयाँ समयलाई पहिलेको समयमा जोडेर बचत गर्नुहोस्।
+        localStorage.setItem(`page:${pageName}`, existingTime + duration);
+    });
+    // END: Code for Page Time Tracking
+    // =============================================
+  </script>
+</body>
+</html>

@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dashboard - Dipak Lungeli</title>
+<style>
+  /* Reset & base styles */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9f9f9;
+    color: #222;
+    transition: background-color 0.3s, color 0.3s;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    background-color: #002244;
+    color: white;
+    padding: 20px 15px;
+    text-align: center;
+    font-size: 1.8rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    position: relative;
+    padding-bottom: 0;
+  }
+  header h1 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.8rem;
+  }
+  header nav {
+    background-color: #003366;
+    padding: 10px 0;
+    font-size: 1.1rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  header nav a, header nav button {
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    margin: 0 5px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    background-color: transparent; /* For buttons in nav */
+    border: none; /* For buttons in nav */
+    cursor: pointer; /* For buttons in nav */
+  }
+  header nav a:hover, header nav a:focus,
+  header nav button:hover, header nav button:focus {
+    background-color: #004488;
+    text-decoration: none;
+  }
+  #themeToggle {
+    position: absolute;
+    right: 15px;
+    top: 20px;
+    background-color: #444;
+    border: none;
+    color: white;
+    font-size: 18px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s;
+  }
+  #themeToggle:hover {
+    background-color: #666;
+  }
+  main {
+    max-width: 1000px;
+    margin: 30px auto 60px auto;
+    padding: 0 20px 40px 20px;
+    flex-grow: 1;
+  }
+  h2 {
+    color: #002244;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 6px;
+    margin-bottom: 18px;
+  }
+  section {
+    margin-bottom: 35px;
+    background: white;
+    padding: 22px 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 12px rgba(0,0,0,0.07);
+  }
+  a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  a:hover, a:focus {
+    text-decoration: underline;
+  }
+  ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin: 0;
+  }
+  li {
+    margin-bottom: 8px;
+  }
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 22px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 15px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease;
+  }
+  button:hover, button:focus {
+    background-color: #0056b3;
+  }
+  .button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .button-group button {
+    margin: 0;
+  }
+
+  footer {
+    background-color: #002244;
+    color: white;
+    text-align: center;
+    padding: 15px 10px;
+    font-size: 0.9rem;
+  }
+
+  /* Dark Theme */
+  body.dark {
+    background-color: #121212;
+    color: #ddd;
+  }
+  body.dark header {
+    background-color: #001122;
+  }
+  body.dark header nav {
+    background-color: #002244;
+  }
+  body.dark header nav a:hover, body.dark header nav button:hover {
+    background-color: #003366;
+  }
+  body.dark button#themeToggle {
+    background-color: #888;
+  }
+  body.dark button#themeToggle:hover {
+    background-color: #aaa;
+  }
+  body.dark section {
+    background: #222;
+    box-shadow: 0 5px 12px rgba(0,0,0,0.7);
+  }
+  body.dark a {
+    color: #4da6ff;
+  }
+  body.dark button#themeToggle {
+    background-color: #888;
+  }
+  body.dark button#themeToggle:hover {
+    background-color: #aaa;
+  }
+
+  /* Login Page Specific Styles */
+  #loginPage {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    flex-direction: column;
+  }
+  .login-box {
+    background: white;
+    padding: 50px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    width: 90%;
+    max-width: 450px;
+    color: #333;
+    animation: fadeIn 0.5s ease-out;
+  }
+  .login-box h3 {
+    margin-top: 0;
+    color: #002244;
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+  }
+  .login-box input[type="password"] {
+    width: calc(100% - 20px);
+    padding: 15px;
+    margin: 15px 0 20px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    text-align: center;
+  }
+  .login-box button {
+    width: calc(100% - 20px);
+    background-color: #007bff;
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  .login-box button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+  }
+  .login-box p.error-message {
+    color: #dc3545;
+    margin-top: 15px;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  /* Dark Theme for Login Box */
+  body.dark .login-box {
+    background: #2b2b2b;
+    color: #eee;
+  }
+  body.dark .login-box h3 {
+    color: #add8e6;
+  }
+  body.dark .login-box input[type="password"] {
+    background-color: #3a3a3a;
+    color: #eee;
+    border: 1px solid #555;
+  }
+  body.dark .login-box button {
+    background-color: #0056b3;
+  }
+  body.dark .login-box button:hover {
+    background-color: #004488;
+  }
+
+  /* Forms within Dashboard */
+  .dashboard-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .dashboard-form label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: block;
+  }
+  .dashboard-form input[type="text"],
+  .dashboard-form input[type="password"],
+  .dashboard-form textarea,
+  .dashboard-form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: white;
+    color: #333;
+  }
+  body.dark .dashboard-form input[type="text"],
+  body.dark .dashboard-form input[type="password"],
+  body.dark .dashboard-form textarea,
+  body.dark .dashboard-form select {
+    background-color: #444;
+    color: #eee;
+    border-color: #555;
+  }
+  .dashboard-form textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+  .dashboard-form button {
+    align-self: flex-start;
+    margin-right: 0;
+  }
+
+  #existingCustomPagesList ul {
+    list-style: none;
+    padding: 0;
+  }
+  #existingCustomPagesList li {
+    background-color: #eef5ff;
+    border: 1px solid #d0e0ff;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  #existingCustomPagesList li span {
+    font-weight: 600;
+    color: #002244;
+  }
+  #existingCustomPagesList li button {
+    margin: 0;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    background-color: #dc3545;
+  }
+  #existingCustomPagesList li button:hover {
+    background-color: #c82333;
+  }
+  body.dark #existingCustomPagesList li {
+    background-color: #333;
+    border-color: #444;
+    color: #eee;
+  }
+  body.dark #existingCustomPagesList li span {
+    color: #add8e6;
+  }
+
+  /* Sortable Sections - Drag and Drop */
+  /* SortableJS ghost item style */
+  .sortable-ghost {
+    opacity: 0.4;
+    background-color: #cceeff; /* Light blue placeholder */
+    border: 1px dashed #88bbff;
+    transition: opacity 0.2s ease-in-out;
+  }
+  body.dark .sortable-ghost {
+    background-color: #555;
+    border-color: #777;
+  }
+  /* Responsive */
+  @media (max-width: 768px) {
+    main {
+      margin: 20px 15px 40px 15px;
+      padding: 0 15px 30px 15px;
+    }
+    button {
+      width: 100%;
+      margin-right: 0;
+    }
+    #themeToggle {
+      right: 10px;
+      padding: 6px 9px;
+      font-size: 16px;
+      top: 15px;
+    }
+    header nav {
+      flex-direction: column;
+      align-items: center;
+    }
+    header nav a, header nav button {
+      margin: 5px 0;
+      width: 100%;
+    }
+    .login-box {
+      padding: 30px 20px;
+    }
+    .login-box h3 {
+      font-size: 1.5rem;
+    }
+    .login-box input[type="password"],
+    .login-box button {
+      padding: 12px;
+      font-size: 1rem;
+    }
+    .button-group button {
+        width: 100%;
+    }
+  }
+
+  /* Fade-in animation for login box */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+</style>
+</head>
+<body>
+
+<audio id="successSound" src="success.ogg" preload="auto"></audio>
+<audio id="errorSound" src="error.ogg" preload="auto"></audio>
+
+<div id="loginPage">
+  <div class="login-box">
+    <h3>Welcome to Dashboard</h3>
+    <p>Please enter your password to continue.</p>
+    <input type="password" id="dashboardPassword" placeholder="Enter password">
+    <p id="passwordError" class="error-message" style="display:none;"></p>
+    <button id="loginButton">Login</button>
+  </div>
+</div>
+
+<header id="dashboardHeader" style="display: none;">
+  <h1>Dashboard - Dipak Lungeli</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="tools.html">Tools</a>
+    <a href="contact.html">Contact</a>
+    <button id="manageContentBtn">Manage Content</button>
+    <button id="settingsBtn">Settings</button>
+    <button id="editWebsiteBtn">Edit Website</button> 
+    <button id="exitDashboardBtn" style="background-color: #dc3545; margin-left: 10px;">Exit Dashboard</button>
+  </nav>
+  <button id="themeToggle" title="Toggle Light/Dark Theme">🌓</button>
+</header>
+
+<main id="dashboardMainContent" style="display: none;">
+  <section id="dateSection">
+    <h2>Today's Date & Time</h2>
+    <p id="dateDisplay" style="font-weight:600; font-size:1.2rem;"></p>
+  </section>
+
+  <section id="websiteInteractions">
+    <h2>Website Interactions</h2>
+    <div class="button-group">
+      <button id="likeBtn">Like (0)</button>
+      <button id="subscribeBtn">Subscribe</button> <button id="messageBtn">Send Message</button>
+    </div>
+  </section>
+
+  <section id="createNewPage" class="content-section">
+    <h2>Create New Page</h2>
+    <div class="dashboard-form">
+      <label for="newPageName">Page Name (e.g., my-blog-post.html):</label>
+      <input type="text" id="newPageName" placeholder="Enter desired file name (no spaces, use hyphens, end with .html)">
+      <label for="newPageTitle">Page Title (e.g., My Awesome Blog Post):</label>
+      <input type="text" id="newPageTitle" placeholder="Enter page title">
+      <label for="newPageType">Page Type:</label>
+      <select id="newPageType">
+        <option value="content">Content Page (for blog posts, articles)</option>
+        <option value="tool">Tool Page (for interactive tools)</option>
+      </select>
+      <label for="newPageContent">Page Content (Full HTML structure recommended):</label>
+      <textarea id="newPageContent" placeholder="Enter full HTML content for the new page. Include basic HTML, HEAD, BODY tags for standalone pages."></textarea>
+      <p id="newPageMessage" style="color:red;"></p>
+      <button id="createPageBtn">Create Page</button>
+    </div>
+  </section>
+
+  <section id="existingCustomPagesList" class="content-section">
+    <h2>Existing Custom Pages</h2>
+    <div id="customPagesDisplay">
+      <p>No custom pages created yet.</p>
+    </div>
+  </section>
+  
+  <section id="settingsSection" class="settings-section">
+    <h2>Settings</h2>
+    <div class="dashboard-form">
+      <h3>Change Dashboard Password</h3>
+      <label for="currentPassword">Current Password:</label>
+      <input type="password" id="currentPassword" placeholder="Enter current password">
+      <label for="newPassword">New Password:</label>
+      <input type="password" id="newPassword" placeholder="Enter new password">
+      <label for="confirmNewPassword">Confirm New Password:</label>
+      <input type="password" id="confirmNewPassword" placeholder="Confirm new password">
+      <p id="passwordChangeMessage" style="color:red;"></p>
+      <button id="changePasswordBtn">Change Password</button>
+    </div>
+
+    <div class="dashboard-form" style="margin-top: 30px;">
+        <h3>Page Time Tracking</h3>
+        <div id="timeData">Loading...</div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="dashboardFooter" style="display: none;">
+  &copy; 2025 Dipak Lungeli — All Rights Reserved
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+
+<script>
+  // =============================================
+  // START: Audio Functions
+  const successSound = document.getElementById('successSound');
+  const errorSound = document.getElementById('errorSound');
+
+  function playSuccessSound() {
+    if (successSound) {
+      successSound.currentTime = 0; // Rewind to start
+      successSound.play().catch(e => console.warn("Success sound play failed:", e));
+    }
+  }
+
+  function playErrorSound() {
+    if (errorSound) {
+      errorSound.currentTime = 0; // Rewind to start
+      errorSound.play().catch(e => console.warn("Error sound play failed:", e));
+    }
+  }
+  // END: Audio Functions
+  // =============================================
+
+  // =============================================
+  // START: Dashboard Security (Password)
+  const PASSWORD_KEY = 'dashboard_password';
+  const DEFAULT_PASSWORD = 'password123'; // This is the initial password. It can be changed later.
+
+  function getDashboardPassword() {
+    return localStorage.getItem(PASSWORD_KEY) || DEFAULT_PASSWORD;
+  }
+
+  function setDashboardPassword(newPassword) {
+    localStorage.setItem(PASSWORD_KEY, newPassword);
+  }
+
+  const loginPage = document.getElementById('loginPage');
+  const dashboardPasswordInput = document.getElementById('dashboardPassword');
+  const loginButton = document.getElementById('loginButton');
+  const passwordError = document.getElementById('passwordError');
+  const dashboardHeader = document.getElementById('dashboardHeader');
+  const dashboardMainContent = document.getElementById('dashboardMainContent');
+  const dashboardFooter = document.getElementById('dashboardFooter');
+
+  // Check login status when the dashboard loads
+  function checkLoginStatus() {
+    if (sessionStorage.getItem('dashboardLoggedIn') === 'true') {
+      loginPage.style.display = 'none'; // Hide login page if already logged in
+      dashboardHeader.style.display = 'block'; // Show header
+      dashboardMainContent.style.display = 'block'; // Show main content
+      dashboardFooter.style.display = 'block'; // Show footer
+      initializeDashboard(); // Initialize other dashboard functions
+      playSuccessSound(); // Play success sound on successful dashboard entry
+    } else {
+      loginPage.style.display = 'flex'; // Show login page if not logged in
+      dashboardHeader.style.display = 'none'; // Hide header
+      dashboardMainContent.style.display = 'none'; // Hide main content
+      dashboardFooter.style.display = 'none'; // Hide footer
+    }
+  }
+
+  loginButton.addEventListener('click', () => {
+    const enteredPassword = dashboardPasswordInput.value;
+    if (enteredPassword === getDashboardPassword()) {
+      sessionStorage.setItem('dashboardLoggedIn', 'true'); // Set flag if login is successful
+      checkLoginStatus(); // Update login status (will trigger playSuccessSound)
+    } else {
+      passwordError.textContent = 'Incorrect password. Please try again.';
+      passwordError.style.display = 'block';
+      dashboardPasswordInput.value = ''; // Clear input
+      playErrorSound(); // Play error sound on incorrect password
+    }
+  });
+
+  // Allow login by pressing Enter
+  dashboardPasswordInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      loginButton.click();
+    }
+  });
+
+  // Exit Dashboard button
+  const exitDashboardBtn = document.getElementById('exitDashboardBtn');
+  exitDashboardBtn.addEventListener('click', () => {
+    sessionStorage.removeItem('dashboardLoggedIn'); // Remove login state
+    playErrorSound(); // Play error/exit sound
+    setTimeout(() => { // Give time for sound to play before reload
+        window.location.reload(); // Refresh the page to show the login page
+    }, 500); // Adjust delay if needed
+  });
+
+  // Password change logic (moved to Settings section)
+  const currentPasswordInput = document.getElementById('currentPassword');
+  const newPasswordInput = document.getElementById('newPassword');
+  const confirmNewPasswordInput = document.getElementById('confirmNewPassword');
+  const changePasswordBtn = document.getElementById('changePasswordBtn');
+  const passwordChangeMessage = document.getElementById('passwordChangeMessage');
+
+  changePasswordBtn.addEventListener('click', () => {
+    const current = currentPasswordInput.value;
+    const newPass = newPasswordInput.value;
+    const confirmNewPass = confirmNewPasswordInput.value;
+
+    if (current !== getDashboardPassword()) {
+      passwordChangeMessage.textContent = 'Current password is incorrect.';
+      passwordChangeMessage.style.color = 'red';
+      playErrorSound(); // Play error sound
+      return;
+    }
+    if (newPass.length < 6) { // Minimum password length
+      passwordChangeMessage.textContent = 'New password must be at least 6 characters long.';
+      passwordChangeMessage.style.color = 'red';
+      playErrorSound(); // Play error sound
+      return;
+    }
+    if (newPass !== confirmNewPass) {
+      passwordChangeMessage.textContent = 'New password and confirmation do not match.';
+      passwordChangeMessage.style.color = 'red';
+      playErrorSound(); // Play error sound
+      return;
+    }
+
+    setDashboardPassword(newPass);
+    passwordChangeMessage.textContent = 'Password changed successfully!';
+    passwordChangeMessage.style.color = 'green';
+    currentPasswordInput.value = '';
+    newPasswordInput.value = '';
+    confirmNewPasswordInput.value = '';
+    playSuccessSound(); // Play success sound
+  });
+  // END: Dashboard Security (Password)
+  // =============================================
+
+  // =============================================
+  // START: Page Management and Drag-and-Drop for Dashboard Sections
+  const newPageNameInput = document.getElementById('newPageName');
+  const newPageTitleInput = document.getElementById('newPageTitle');
+  const newPageTypeSelect = document.getElementById('newPageType');
+  const newPageContentTextarea = document.getElementById('newPageContent');
+  const createPageBtn = document.getElementById('createPageBtn');
+  const newPageMessage = document.getElementById('newPageMessage');
+  const customPagesDisplay = document.getElementById('customPagesDisplay');
+
+  // "Save Section Order" button and message will be added to the main content
+  const saveOrderBtn = document.createElement('button');
+  saveOrderBtn.textContent = "Save Section Order";
+  saveOrderBtn.style.marginTop = "20px";
+  saveOrderBtn.style.display = "block";
+  saveOrderBtn.style.width = "auto";
+  saveOrderBtn.style.padding = "10px 20px";
+  
+  const orderSaveMessage = document.createElement('p');
+  orderSaveMessage.style.color = 'green';
+  orderSaveMessage.style.marginTop = '10px';
+  orderSaveMessage.style.display = 'none';
+
+  let customPages = JSON.parse(localStorage.getItem('customPages')) || [];
+  let dashboardSectionOrder = JSON.parse(localStorage.getItem('dashboardSectionOrder')) || [];
+
+  // Function to render custom pages in the "Existing Custom Pages" section
+  function renderCustomPages() {
+    if (customPages.length === 0) {
+      customPagesDisplay.innerHTML = '<p>No custom pages created yet.</p>';
+      return;
+    }
+    const ul = document.createElement('ul');
+    customPages.forEach((page, index) => {
+      const li = document.createElement('li');
+      li.innerHTML = `<span><a href="${page.fileName}" target="_blank" rel="noopener noreferrer">${page.title}</a> (${page.fileName}, Type: ${page.type})</span>
+                      <button data-index="${index}">Delete</button>`;
+      ul.appendChild(li);
+    });
+    customPagesDisplay.innerHTML = '';
+    customPagesDisplay.appendChild(ul);
+
+    // Add event listeners for delete buttons
+    customPagesDisplay.querySelectorAll('button').forEach(button => {
+      button.addEventListener('click', (event) => {
+        const indexToDelete = event.target.dataset.index;
+        deleteCustomPage(indexToDelete);
+      });
+    });
+  }
+
+  // Function to delete a custom page
+  function deleteCustomPage(index) {
+    if (confirm('Are you sure you want to delete this page? This will also remove it from dashboard section ordering.')) {
+      const pageToDelete = customPages[index];
+      customPages.splice(index, 1);
+      localStorage.setItem('customPages', JSON.stringify(customPages));
+      newPageMessage.textContent = `${pageToDelete.title} deleted successfully. (Note: Actual file not removed from server in this demo.)`;
+      newPageMessage.style.color = 'green';
+      playSuccessSound(); // Play success sound on deletion
+
+      // Also remove from dashboardSectionOrder if it exists there
+      dashboardSectionOrder = dashboardSectionOrder.filter(item => item !== `custom-page-${pageToDelete.fileName.replace(/\./g, '-')}`);
+      localStorage.setItem('dashboardSectionOrder', JSON.stringify(dashboardSectionOrder));
+
+      renderCustomPages(); // Re-render the list
+      applyDashboardSectionOrder(); // Re-apply the dashboard order
+    } else {
+        playErrorSound(); // Play error sound if deletion is cancelled
+    }
+  }
+
+  // Function to handle creating a new page
+  createPageBtn.addEventListener('click', () => {
+    const fileName = newPageNameInput.value.trim();
+    const pageTitle = newPageTitleInput.value.trim();
+    const pageType = newPageTypeSelect.value;
+    const pageContent = newPageContentTextarea.value.trim();
+
+    if (!fileName || !pageTitle || !pageContent) {
+      newPageMessage.textContent = 'All fields are required.';
+      newPageMessage.style.color = 'red';
+      playErrorSound(); // Play error sound
+      return;
+    }
+
+    if (!/^[a-zA-Z0-9_-]+\.html$/.test(fileName)) {
+      newPageMessage.textContent = 'Invalid file name. Use letters, numbers, hyphens, underscores, and end with .html (e.g., my-new-page.html).';
+      newPageMessage.style.color = 'red';
+      playErrorSound(); // Play error sound
+      return;
+    }
+
+    if (customPages.some(page => page.fileName === fileName)) {
+      newPageMessage.textContent = `Page with filename "${fileName}" already exists.`;
+      newPageMessage.style.color = 'red';
+      playErrorSound(); // Play error sound
+      return;
+    }
+
+    const newPage = {
+      fileName: fileName,
+      title: pageTitle,
+      type: pageType, // Save page type
+      content: pageContent
+    };
+
+    customPages.push(newPage);
+    localStorage.setItem('customPages', JSON.stringify(customPages));
+
+    newPageMessage.textContent = `Page "${pageTitle}" (${fileName}) created successfully! (File not actually saved to server in this demo.)`;
+    newPageMessage.style.color = 'green';
+    playSuccessSound(); // Play success sound on creation
+    
+    newPageNameInput.value = '';
+    newPageTitleInput.value = '';
+    newPageTypeSelect.value = 'content'; // Reset to default
+    newPageContentTextarea.value = '';
+    
+    renderCustomPages(); // Update the list of custom pages
+    applyDashboardSectionOrder(); // Update the main dashboard order
+  });
+
+  // --- Drag-and-Drop (SortableJS) Initialization and Management ---
+  let sortable; // Define sortable globally
+
+  // Function to get the current list of all available sections (default + custom)
+  function getAllDashboardSections() {
+    const sections = [
+      { id: 'dateSection', title: 'Today\'s Date & Time', description: 'Displays the current date and time.' },
+      { id: 'websiteInteractions', title: 'Website Interactions', description: 'Like, Subscribe, and Message buttons.' },
+      { id: 'createNewPage', title: 'Create New Page', description: 'Form to create new HTML pages.' }, // Dragabble now
+      { id: 'existingCustomPagesList', title: 'Existing Custom Pages', description: 'List of all custom pages you have created.' }, // Dragabble now
+      { id: 'settingsSection', title: 'Settings', description: 'Manage dashboard password and view page time tracking.' } // Dragabble now
+    ];
+
+    // Add custom pages as sections to be draggable in the main content area
+    customPages.forEach(p => {
+      sections.push({
+        id: `custom-page-${p.fileName.replace(/\./g, '-')}`, // Unique ID for custom pages (replace . with - for valid ID)
+        title: p.title,
+        description: `Custom ${p.type} page: ${p.fileName}`,
+        isCustom: true // Flag to identify custom pages
+      });
+    });
+
+    return sections;
+  }
+
+  // Function to apply the saved order to the actual dashboard sections
+  function applyDashboardSectionOrder() {
+    const mainElement = document.getElementById('dashboardMainContent');
+    const allSectionsData = getAllDashboardSections();
+
+    // Ensure all current sections are in the order, add new ones to end if any
+    const allSectionIds = new Set(allSectionsData.map(s => s.id));
+    let newDashboardSectionOrder = [];
+
+    // First, add sections based on the saved order
+    dashboardSectionOrder.forEach(id => {
+      if (allSectionIds.has(id)) {
+        newDashboardSectionOrder.push(id);
+      }
+    });
+
+    // Then, add any new sections that were not in the saved order
+    allSectionsData.forEach(section => {
+      if (!newDashboardSectionOrder.includes(section.id)) {
+        newDashboardSectionOrder.push(section.id);
+      }
+    });
+
+    dashboardSectionOrder = newDashboardSectionOrder;
+    localStorage.setItem('dashboardSectionOrder', JSON.stringify(dashboardSectionOrder));
+
+    // Get all current sections in the DOM to re-append them
+    const domSections = new Map();
+    mainElement.querySelectorAll('section').forEach(section => {
+      domSections.set(section.id, section);
+    });
+
+    // Clear mainElement and re-append sections in the new order
+    // Ensure "Save Section Order" button and message are kept at the end
+    const tempElements = [];
+    if (saveOrderBtn.parentNode === mainElement) tempElements.push(saveOrderBtn);
+    if (orderSaveMessage.parentNode === mainElement) tempElements.push(orderSaveMessage);
+
+    mainElement.innerHTML = ''; // Clear all existing content
+
+    dashboardSectionOrder.forEach(id => {
+      if (domSections.has(id)) {
+        mainElement.appendChild(domSections.get(id));
+      }
+    });
+    
+    // Re-append the save button and message
+    tempElements.forEach(el => mainElement.appendChild(el));
+
+    // Initialize SortableJS if not already initialized or update it
+    if (!sortable) {
+      sortable = Sortable.create(mainElement, {
+        animation: 150,
+        filter: 'button, a', // Exclude buttons and links from being draggable themselves
+        handle: 'h2', // Make only the H2 tag act as a drag handle
+        onEnd: function (evt) {
+          // Get the new order of section IDs after drag-and-drop
+          dashboardSectionOrder = sortable.toArray();
+          // We'll save the order when "Save Section Order" button is clicked
+        },
+        ghostClass: 'sortable-ghost', // Class for the ghost item
+        forceFallback: true // Important for some environments
+      });
+      // Add the save button and message initially if not already present
+      if (!saveOrderBtn.parentNode) mainElement.appendChild(saveOrderBtn);
+      if (!orderSaveMessage.parentNode) mainElement.appendChild(orderSaveMessage);
+    } else {
+      // Update SortableJS's internal list if already initialized
+      sortable.sort(dashboardSectionOrder);
+    }
+  }
+
+  // Save the new order to localStorage
+  saveOrderBtn.addEventListener('click', () => {
+    const currentOrder = sortable.toArray(); 
+    localStorage.setItem('dashboardSectionOrder', JSON.stringify(currentOrder));
+    orderSaveMessage.textContent = 'Section order saved successfully!';
+    orderSaveMessage.style.display = 'block';
+    playSuccessSound(); // Play success sound on saving order
+    setTimeout(() => orderSaveMessage.style.display = 'none', 3000); // Clear message after 3 seconds
+    applyDashboardSectionOrder(); // Re-apply the order immediately
+  });
+
+  // =============================================
+  // New: Manage Content and Settings Buttons
+  const manageContentBtn = document.getElementById('manageContentBtn');
+  const settingsBtn = document.getElementById('settingsBtn');
+  const createNewPageSection = document.getElementById('createNewPage');
+  const existingCustomPagesListSection = document.getElementById('existingCustomPagesList');
+  const settingsSection = document.getElementById('settingsSection');
+
+  // Initially hide content and settings sections
+  createNewPageSection.style.display = 'none';
+  existingCustomPagesListSection.style.display = 'none';
+  settingsSection.style.display = 'none';
+
+  manageContentBtn.addEventListener('click', () => {
+    // Hide settings section if it's visible
+    settingsSection.style.display = 'none'; 
+    // Toggle content sections
+    const isVisible = createNewPageSection.style.display === 'block';
+    createNewPageSection.style.display = isVisible ? 'none' : 'block';
+    existingCustomPagesListSection.style.display = isVisible ? 'none' : 'block';
+  });
+
+  settingsBtn.addEventListener('click', () => {
+    // Hide content sections if they are visible
+    createNewPageSection.style.display = 'none';
+    existingCustomPagesListSection.style.display = 'none';
+    // Toggle settings section
+    const isVisible = settingsSection.style.display === 'block';
+    settingsSection.style.display = isVisible ? 'none' : 'block';
+  });
+
+  // END: Page Management and Drag-and-Drop for Dashboard Sections
+  // =============================================
+
+
+  // This function runs once the user has successfully logged in
+  function initializeDashboard() {
+    renderCustomPages();
+    applyDashboardSectionOrder(); // Initialize and apply the order
+    updateButtons(); // Make sure this is called to update button states on load
+    renderTimeTracking();
+    updateDate(); // Start date/time updates
+    // Ensure SortableJS is re-initialized/updated after DOM changes
+    if (sortable) {
+        sortable.destroy(); // Destroy previous instance if exists
+        sortable = null; // Clear it
+    }
+    applyDashboardSectionOrder(); // Re-initialize sortable
+  }
+
+
+  // === THEME TOGGLE ===
+  const themeToggle = document.getElementById('themeToggle');
+
+  function setTheme(theme) {
+    if(theme === 'dark'){
+      document.body.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.body.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }
+
+  // Initialize theme on page load (even before login to avoid flash of unstyled content)
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  setTheme(savedTheme);
+
+  themeToggle.onclick = () => {
+    if(document.body.classList.contains('dark')){
+      setTheme('light');
+    } else {
+      setTheme('dark');
+    }
+  };
+
+  // === LIKE & SUBSCRIBE BUTTONS ===
+  const likeBtn = document.getElementById('likeBtn');
+  const subscribeBtn = document.getElementById('subscribeBtn'); // Corrected to target the specific subscribe button
+  const messageBtn = document.getElementById('messageBtn');
+
+  // Load initial values from Local Storage
+  let likesCount = Number(localStorage.getItem('likesCount')) || 0;
+  let isSubscribed = (localStorage.getItem('isSubscribed') === 'true');
+
+  function updateButtons(){
+    likeBtn.textContent = `Like (${likesCount})`;
+    subscribeBtn.textContent = isSubscribed ? 'Subscribed' : 'Subscribe';
+    subscribeBtn.style.backgroundColor = isSubscribed ? '#28a745' : '#007bff';
+  }
+
+  likeBtn.onclick = () => {
+    likesCount++;
+    localStorage.setItem('likesCount', likesCount); // Update Local Storage
+    updateButtons(); // Update dashboard buttons
+    alert(`Thank you for liking! Total Likes: ${likesCount}`);
+    playSuccessSound(); // Play success sound on like
+    // The 'storage' event will notify other tabs/windows
+  };
+
+  subscribeBtn.onclick = () => {
+    isSubscribed = !isSubscribed;
+    localStorage.setItem('isSubscribed', isSubscribed); // Update Local Storage
+    updateButtons(); // Update dashboard buttons
+    alert(isSubscribed ? 'Subscribed!' : 'Unsubscribed');
+    playSuccessSound(); // Play success sound on subscribe/unsubscribe
+    // The 'storage' event will notify other tabs/windows
+  };
+
+  messageBtn.onclick = () => {
+    window.location.href = 'mailto:dipaklungeli345@gmail.com?subject=Message from Dashboard';
+  };
+
+  // Listen for changes in Local Storage from other tabs/windows
+  window.addEventListener('storage', (event) => {
+    if (event.key === 'likesCount') {
+      likesCount = Number(event.newValue);
+      updateButtons();
+    }
+    if (event.key === 'isSubscribed') {
+      isSubscribed = (event.newValue === 'true');
+      updateButtons();
+    }
+  });
+
+
+  // === PAGE TIME TRACKING ===
+  function msToTime(duration) {
+    let seconds = Math.floor((duration / 1000) % 60);
+    let minutes = Math.floor((duration / (1000 * 60)) % 60);
+    let hours = Math.floor(duration / (1000 * 60 * 60));
+    return `${hours}h ${minutes}m ${seconds}s`;
+  }
+
+  function renderTimeTracking(){
+    const container = document.getElementById('timeData');
+    container.innerHTML = '';
+    let keys = Object.keys(localStorage).filter(k => k.startsWith('page:'));
+    if(keys.length === 0){
+      container.textContent = 'No time tracking data available.';
+      return;
+    }
+    let ul = document.createElement('ul');
+    keys.forEach(key => {
+      let pageName = key.replace('page:', '');
+      let timeMs = Number(localStorage.getItem(key)) || 0;
+      let li = document.createElement('li');
+      li.textContent = `${pageName}: ${msToTime(timeMs)}`;
+      ul.appendChild(li);
+    });
+    container.appendChild(ul);
+  }
+
+  // === TODAY'S DATE DISPLAY ===
+  let dateInterval; // Global variable to store interval ID
+  function updateDate(){
+    const dateElem = document.getElementById('dateDisplay');
+    if (!dateElem) return; // Exit if element not found (e.g. before login)
+    const now = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+    dateElem.textContent = now.toLocaleDateString('en-US', options);
+  }
+  
+  // Call checkLoginStatus on DOMContentLoaded to handle initial load
+  document.addEventListener('DOMContentLoaded', checkLoginStatus);
+
+  // New: "Edit Website" button functionality
+  const editWebsiteBtn = document.getElementById('editWebsiteBtn');
+  if (editWebsiteBtn) {
+    editWebsiteBtn.addEventListener('click', () => {
+      window.open('https://github.com', '_blank'); // Opens GitHub in a new tab
+    });
+  }
+
+</script>
+</body>
+</html>

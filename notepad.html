@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Notepad</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  
+  <style>
+    /* Global Styles */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background: #f0f2f5;
+      color: #333;
+    }
+    .container {
+      max-width: 900px;
+      margin: 2.5rem auto;
+      padding: 2rem;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #0056b3;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Section Styles */
+    .section {
+      margin-bottom: 1.5rem;
+    }
+    details summary {
+      font-weight: bold;
+      font-size: 1rem;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background-color: #e9e9e9;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    details summary:hover {
+        background-color: #e0e0e0;
+    }
+    details[open] summary {
+      background-color: #dcdcdc;
+    }
+
+    /* Toolbar Styles */
+    .toolbar-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      padding: 1rem;
+      border: 1px solid #eee;
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+      background-color: #fcfcfc;
+    }
+    .toolbar-controls button,
+    .toolbar-controls select,
+    .toolbar-controls input[type="color"] {
+      padding: 0.7rem 1.2rem;
+      font-size: 0.95rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      cursor: pointer;
+      background-color: #f7f7f7;
+      transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+      outline: none; /* Remove default outline */
+    }
+    .toolbar-controls button:hover,
+    .toolbar-controls select:hover,
+    .toolbar-controls input[type="color"]:hover {
+      background-color: #e0e0e0;
+      border-color: #a0a0a0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .toolbar-controls .primary {
+      background: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+    .toolbar-controls .primary:hover {
+      background: #0069d9;
+      border-color: #0062cc;
+    }
+    .toolbar-controls input[type="color"] {
+        padding: 0; /* Adjust padding for color input */
+        width: 40px; /* Specific width for color input */
+        height: 40px;
+        box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    }
+
+    /* Notepad Area Styles */
+    #notepadArea {
+      width: 100%;
+      min-height: 400px;
+      padding: 1.2rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      resize: vertical; /* Allow vertical resizing */
+      overflow-y: auto; /* Enable vertical scroll if content overflows */
+      background: #fff;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); /* Subtle inner shadow */
+      outline: none; /* Remove default focus outline */
+      /* Default font, can be changed by user */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    }
+    /* Placeholder for contenteditable */
+    #notepadArea:empty:not(:focus):before {
+        content: attr(data-placeholder);
+        color: #aaa;
+        display: block;
+        pointer-events: none; /* Make sure placeholder doesn't interfere with clicks */
+    }
+
+    /* Experiment Area Styles (Image + Text) */
+    .experiment-area {
+      display: none; /* Hidden by default */
+      flex-direction: row; /* Arrange items in a row */
+      flex-wrap: wrap;
+      gap: 1rem;
+      border: 2px dashed #007bff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      background: #f9f9f9;
+      min-height: 120px; /* Minimum height for drop target */
+      align-items: center; /* Center items vertically if they don't fill the height */
+      justify-content: center; /* Center items horizontally */
+      text-align: center;
+      transition: border-color 0.3s, background-color 0.3s;
+    }
+    .experiment-area.active {
+      display: flex; /* Show when active */
+    }
+    .experiment-area.dragover-active {
+        border-style: solid; /* Change to solid border on drag-over */
+        border-width: 2px;
+        border-color: #0056b3; /* Darker blue border */
+        background-color: #e6f0ff; /* Light blue background */
+    }
+    .experiment-area img {
+      max-width: 150px;
+      max-height: 150px; /* Limit image height */
+      height: auto;
+      border-radius: 5px;
+      border: 1px solid #eee;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      object-fit: contain; /* Ensure the image fits within its bounds without cropping */
+    }
+    #experimentPlaceholder {
+        color: #777;
+        font-style: italic;
+        font-size: 1.1rem;
+    }
+
+    /* Utility & Responsive Styles */
+    .page-number {
+      text-align: right;
+      font-size: 0.85rem;
+      color: #777;
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid #eee;
+    }
+    @media (max-width: 768px) {
+      .container {
+        margin: 1rem auto;
+        padding: 1rem;
+      }
+      .toolbar-controls {
+        flex-direction: column;
+        align-items: stretch; /* Stretch items to full width */
+      }
+      .toolbar-controls button,
+      .toolbar-controls select,
+      .toolbar-controls input[type="color"] {
+        width: 100%; /* Full width on smaller screens */
+      }
+      .toolbar-controls input[type="color"] {
+        height: auto; /* Allow height to adjust */
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Advanced Notepad</h1>
+
+    <details class="section" open>
+      <summary>Toolbar</summary>
+      <div class="toolbar-controls">
+        <select id="fontFamilySelect">
+          <option value="Segoe UI, Tahoma, Geneva, Verdana, sans-serif">Default</option>
+          <option value="Arial, sans-serif">Arial</option>
+          <option value="Verdana, sans-serif">Verdana</option>
+          <option value="Times New Roman, serif">Times New Roman</option>
+          <option value="Georgia, serif">Georgia</option>
+          <option value="Courier New, monospace">Courier New</option>
+          <option value="Lucida Console, monospace">Lucida Console</option>
+        </select>
+
+        <button id="alignLeftBtn">Left Align</button>
+        <button id="alignCenterBtn">Center Align</button>
+        <button id="alignRightBtn">Right Align</button>
+        <button id="alignJustifyBtn">Justify</button>
+        
+        <button id="undoBtn">Undo</button>
+        <button id="redoBtn">Redo</button>
+
+        <select id="highlightSelectionType">
+          <option value="none">Highlight Scope</option>
+          <option value="paragraph">Paragraph</option>
+          <option value="selection">Selected Text</option>
+        </select>
+        <input type="color" id="highlightColorPicker" value="#FFFF00">
+        <button id="applyHighlightBtn">Apply Highlight</button>
+
+        <select id="exportFormat">
+          <option value="txt">.txt</option>
+          <option value="png">.png</option>
+          <option value="jpg">.jpg</option>
+          <option value="pdf">.pdf</option>
+        </select>
+        <button id="exportContentBtn" class="primary">Export Note</button>
+
+        <button id="toggleExperimentBtn">Toggle Experiment Mode</button>
+      </div>
+    </details>
+
+    <details class="section" open>
+      <summary>Notepad Area</summary>
+      <div id="notepadArea" contenteditable="true" data-placeholder="Start writing your notes here...">
+        </div>
+    </details>
+
+    <details class="section">
+      <summary>Experiment Mode (Image Integration)</summary>
+      <div>
+        <div id="experimentArea" class="experiment-area">
+          <p id="experimentPlaceholder">Drag and drop images here or use the upload button.</p>
+        </div>
+        <input type="file" id="imageUpload" accept="image/*" multiple style="display: none;">
+        <button id="addImageBtn" style="margin-top: 0.8rem;">Add Image</button>
+      </div>
+    </details>
+
+    <div id="pageNumbers" class="page-number"></div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const notepadArea = document.getElementById('notepadArea');
+      const highlightSelectionType = document.getElementById('highlightSelectionType');
+      const highlightColorPicker = document.getElementById('highlightColorPicker');
+      const exportFormatSelect = document.getElementById('exportFormat');
+      const experimentArea = document.getElementById('experimentArea');
+      const experimentPlaceholder = document.getElementById('experimentPlaceholder');
+      const imageUploadInput = document.getElementById('imageUpload');
+      const pageNumbersDiv = document.getElementById('pageNumbers');
+      const fontFamilySelect = document.getElementById('fontFamilySelect');
+
+      // --- Toolbar Event Listeners ---
+      document.getElementById('applyHighlightBtn').addEventListener('click', applyHighlight);
+      document.getElementById('exportContentBtn').addEventListener('click', exportContent);
+      document.getElementById('toggleExperimentBtn').addEventListener('click', toggleExperimentMode);
+      document.getElementById('addImageBtn').addEventListener('click', () => imageUploadInput.click());
+      imageUploadInput.addEventListener('change', handleImageUploadEvent);
+
+      // New: Font family and alignment
+      fontFamilySelect.addEventListener('change', (event) => {
+        notepadArea.focus(); // Ensure notepad is focused
+        document.execCommand('fontName', false, event.target.value);
+        // Also apply to notepadArea style to ensure consistent export
+        notepadArea.style.fontFamily = event.target.value;
+      });
+
+      document.getElementById('alignLeftBtn').addEventListener('click', () => {
+        notepadArea.focus();
+        document.execCommand('justifyLeft', false, null);
+        notepadArea.style.textAlign = 'left'; // Update style for consistent export
+      });
+      document.getElementById('alignCenterBtn').addEventListener('click', () => {
+        notepadArea.focus();
+        document.execCommand('justifyCenter', false, null);
+        notepadArea.style.textAlign = 'center'; // Update style for consistent export
+      });
+      document.getElementById('alignRightBtn').addEventListener('click', () => {
+        notepadArea.focus();
+        document.execCommand('justifyRight', false, null);
+        notepadArea.style.textAlign = 'right'; // Update style for consistent export
+      });
+      document.getElementById('alignJustifyBtn').addEventListener('click', () => {
+        notepadArea.focus();
+        document.execCommand('justifyFull', false, null);
+        notepadArea.style.textAlign = 'justify'; // Update style for consistent export
+      });
+
+      // New: Undo/Redo
+      document.getElementById('undoBtn').addEventListener('click', () => {
+        notepadArea.focus();
+        document.execCommand('undo', false, null);
+      });
+      document.getElementById('redoBtn').addEventListener('click', () => {
+        notepadArea.focus();
+        document.execCommand('redo', false, null);
+      });
+
+      // --- Drag and Drop for Images ---
+      experimentArea.addEventListener('dragover', handleDragOver);
+      experimentArea.addEventListener('dragleave', handleDragLeave);
+      experimentArea.addEventListener('drop', handleDrop);
+
+      function handleDragOver(event) {
+        event.preventDefault(); // Prevent default to allow drop
+        event.stopPropagation();
+        experimentArea.classList.add('dragover-active'); // Add visual feedback
+      }
+
+      function handleDragLeave(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        experimentArea.classList.remove('dragover-active'); // Remove visual feedback
+      }
+
+      function handleDrop(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        experimentArea.classList.remove('dragover-active'); // Remove visual feedback
+
+        const files = event.dataTransfer.files;
+        if (files.length > 0) {
+          activateExperimentAreaAndProcessFiles(files);
+        }
+      }
+
+      function handleImageUploadEvent(event) {
+        const files = event.target.files;
+        if (!files.length) return; // No files selected
+        activateExperimentAreaAndProcessFiles(files);
+        event.target.value = ''; // Clear the file input to allow re-uploading the same file
+      }
+
+      function activateExperimentAreaAndProcessFiles(files) {
+        if (!experimentArea.classList.contains('active')) {
+          experimentArea.classList.add('active'); // Activate experiment area if not already
+        }
+        if (experimentPlaceholder && experimentPlaceholder.style.display !== 'none') {
+          experimentPlaceholder.style.display = 'none'; // Hide placeholder once images are added
+        }
+        processFilesForImageDisplay(files);
+      }
+
+      function processFilesForImageDisplay(files) {
+        for (const file of files) {
+          if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const img = document.createElement('img');
+              img.src = e.target.result;
+              img.alt = file.name;
+              experimentArea.appendChild(img);
+            };
+            reader.readAsDataURL(file); // Read file as data URL for image display
+          } else {
+            console.warn(`Skipping non-image file: ${file.name} (${file.type})`);
+          }
+        }
+      }
+
+      // --- Apply Highlight ---
+      function applyHighlight() {
+        const color = highlightColorPicker.value;
+        const selectionType = highlightSelectionType.value;
+        const selection = window.getSelection();
+
+        if (!selection || selection.rangeCount === 0 || selection.isCollapsed) {
+          alert("Please select text to highlight.");
+          return;
+        }
+
+        notepadArea.focus(); // Ensure notepadArea is focused for execCommand to work correctly
+
+        if (selectionType === 'paragraph') {
+          const originalSelectionRanges = []; // Store original ranges to restore selection
+          for (let i = 0; i < selection.rangeCount; i++) {
+            originalSelectionRanges.push(selection.getRangeAt(i).cloneRange());
+          }
+
+          const affectedParagraphs = getSelectedParagraphs(originalSelectionRanges[0]); // Use the first range
+
+          if (affectedParagraphs.length > 0) {
+            selection.removeAllRanges(); // Clear current selection to apply highlight to full paragraphs
+            for (const p of affectedParagraphs) {
+              const pRange = document.createRange();
+              pRange.selectNodeContents(p); // Select the entire paragraph
+              selection.addRange(pRange);
+              try {
+                document.execCommand('backColor', false, color);
+              } catch (e) {
+                console.error("Error applying paragraph highlight:", e);
+              }
+              selection.removeRange(pRange); // Remove the range after applying highlight to avoid cumulative selection
+            }
+            // Restore original selection
+            if (originalSelectionRanges.length > 0) {
+              selection.removeAllRanges(); // Clear again before restoring
+              selection.addRange(originalSelectionRanges[0]);
+            }
+          } else {
+            // Fallback if no paragraphs are identified (e.g., selection is not within a typical block)
+            console.warn("Could not identify paragraph(s). Applying highlight to current selection directly.");
+            try {
+              document.execCommand('backColor', false, color);
+            } catch (e) {
+              console.error("Error applying fallback highlight:", e);
+            }
+          }
+        } else if (selectionType === 'selection' || selectionType === 'none') {
+            // Default to applying highlight to the exact selected text
+            try {
+                document.execCommand('backColor', false, color);
+            } catch (e) {
+                console.error("Error applying selected text highlight:", e);
+            }
+        }
+      }
+
+      function getSelectedParagraphs(range) {
+        const paragraphs = new Set();
+        let commonAncestor = range.commonAncestorContainer;
+
+        // Find the closest common ancestor that is inside notepadArea or is notepadArea itself
+        while (commonAncestor && commonAncestor !== notepadArea && !notepadArea.contains(commonAncestor)) {
+            commonAncestor = commonAncestor.parentNode;
+        }
+        if (!commonAncestor || !notepadArea.contains(commonAncestor)) {
+            return [];
+        }
+
+        // Helper to check if a node is a block-level element that acts as a paragraph
+        const isBlockElement = (node) => {
+          return node && node.nodeType === Node.ELEMENT_NODE &&
+                 ['P', 'DIV', 'BLOCKQUOTE', 'LI', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'].includes(node.tagName.toUpperCase());
+        };
+
+        // If the selection starts and ends within the same block element
+        const startBlock = isBlockElement(range.startContainer) ? range.startContainer : range.startContainer.closest('p, div, blockquote, li, h1, h2, h3, h4, h5, h6');
+        const endBlock = isBlockElement(range.endContainer) ? range.endContainer : range.endContainer.closest('p, div, blockquote, li, h1, h2, h3, h4, h5, h6');
+
+        if (startBlock && notepadArea.contains(startBlock)) {
+            paragraphs.add(startBlock);
+        }
+        if (endBlock && notepadArea.contains(endBlock)) {
+            paragraphs.add(endBlock);
+        }
+
+        // If selection spans across multiple nodes, find all block elements within the range
+        if (commonAncestor && commonAncestor.nodeType === Node.ELEMENT_NODE) {
+            const treeWalker = document.createTreeWalker(
+                commonAncestor,
+                NodeFilter.SHOW_ELEMENT,
+                {
+                    acceptNode: (node) => {
+                        if (isBlockElement(node) && range.intersectsNode(node) && notepadArea.contains(node)) {
+                            return NodeFilter.FILTER_ACCEPT;
+                        }
+                        return NodeFilter.FILTER_SKIP;
+                    }
+                },
+                false
+            );
+
+            let node;
+            while ((node = treeWalker.nextNode())) {
+                paragraphs.add(node);
+            }
+        }
+        return Array.from(paragraphs);
+      }
+
+      // --- Export Content ---
+      async function exportContent() {
+        const format = exportFormatSelect.value;
+        
+        // Generate a unique filename with user's name and timestamp
+        const userName = "Dipak"; // तपाईंको नाम यहाँ राख्नुहोस्
+        const now = new Date();
+        const timestamp = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}_${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
+        const filenameBase = `${userName}_Note_${timestamp}`;
+        const filename = `${filenameBase}.${format}`;
+
+        if (format === 'txt') {
+          const textContent = notepadArea.textContent;
+          const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+          downloadBlob(blob, filename);
+        } else if (typeof html2canvas === 'function' && (format === 'png' || format === 'jpg')) {
+          try {
+            const contentToCapture = document.createElement('div');

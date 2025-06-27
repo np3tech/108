@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>  
+<meta charset="UTF-8" />  
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />  
+<title>Dipak Lungeli - Personal Website</title>  
+<style>    
+body {      
+margin: 0;      
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;      
+background-color: #f9f9f9;      
+color: #333;    
+}    
+header {      
+background-color: #002244; /* Dark blue */      
+color: white;      
+padding: 15px 20px; /* Adjusted padding for better fit with logo */      
+text-align: center;      
+box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow */    
+}    
+
+/* New CSS for the logo container and the logo itself */
+.header-top {
+    display: flex; /* Use flexbox to align logo and title */
+    align-items: center; /* Vertically align items in the middle */
+    justify-content: center; /* Horizontally center content */
+    margin-bottom: 10px; /* Space between logo/title and navigation */
+}
+
+.header-logo-container {
+    /* Optional: If you want a specific background or border around the logo */
+    /* width: 70px; */ /* Fixed width for the container if needed */
+    /* height: 70px; */ /* Fixed height for the container if needed */
+    /* overflow: hidden; */ /* Hide parts of logo if it overflows a fixed container */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px; /* Space between logo and title */
+}
+
+.header-logo {
+    max-width: 65px; /* Maximum width the logo can take */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Remove extra space below image */
+    border-radius: 50%; /* Makes it round if desired, remove for square */
+    /* If you have different aspect ratios, you might use object-fit: cover; here */
+    /* object-fit: cover; */
+}
+
+header h1 {      
+    margin: 0; /* Remove default margin */
+    font-size: 36px; /* Adjust size as needed */
+    line-height: 1; /* Ensure tight spacing if needed */
+    white-space: nowrap; /* Prevent title from wrapping */
+}
+
+nav {      
+margin-top: 10px;    
+}    
+nav a {      
+color: #fff;      
+text-decoration: none;      
+margin: 0 15px;      
+font-weight: bold;      
+transition: color 0.3s ease; /* Smooth transition for hover */    
+}    
+nav a:hover {      
+color: #88ccff; /* Lighter blue on hover */      
+text-decoration: none;    
+}    
+main {      
+padding: 40px 20px;      
+max-width: 1000px;      
+margin: auto;      
+text-align: center;    
+}    
+h2 {      
+color: #002244;      
+margin-bottom: 30px;    
+}
+    .bio {      
+text-align: left;      
+margin-top: 20px;      
+background: #fff;      
+padding: 30px; /* Slightly more padding */      
+border-radius: 10px; /* Softer corners */      
+box-shadow: 0 5px 15px rgba(0,0,0,0.08); /* More pronounced shadow */      
+line-height: 1.7; /* Better readability */    
+}    
+.bio p {      
+margin-bottom: 15px;    
+}    
+.buttons-container {      
+margin-top: 40px;      
+display: flex;      
+justify-content: center;      
+gap: 20px; /* Space between buttons */    
+}    
+.action-button {      
+background-color: #007bff; /* Primary button color */      
+color: white;      
+border: none;      
+padding: 12px 25px;      
+border-radius: 5px;      
+cursor: pointer;      
+font-size: 16px;      
+font-weight: bold;      
+transition: background-color 0.3s ease, transform 0.2s ease;    
+}    
+.action-button:hover {      
+background-color: #0056b3; /* Darker blue on hover */      
+transform: translateY(-2px); /* Slight lift effect */    
+}    
+.action-button:active {      
+transform: translateY(0);    
+}    
+/* Added for subscribed state */
+.action-button.subscribed {
+    background-color: #28a745; /* Green when subscribed */
+}
+
+footer {      
+background-color: #222;      
+color: #aaa;      
+padding: 15px 0; /* More padding */      
+text-align: center;      
+margin-top: 60px; /* More space above footer */      
+font-size: 0.9em;    
+}    
+/* Media Queries for Responsive Design */    
+@media (max-width: 768px) {      
+nav a {        
+display: block;        
+margin: 10px 0;      
+}
+      .bio {        
+padding: 20px;      
+}      
+.buttons-container {        
+flex-direction: column;        
+gap: 15px;      
+}    
+/* Adjust logo size for medium screens */
+.header-logo {
+    max-width: 55px; /* Slightly smaller logo */
+}
+header h1 {
+    font-size: 32px;
+}
+}    
+@media (max-width: 480px) {      
+header h1 {        
+font-size: 28px;      
+}      
+/* Adjust logo size for smaller screens */
+.header-logo {
+    max-width: 45px; /* Even smaller logo on small screens */
+    margin-right: 10px;
+}
+h2 {        
+font-size: 22px;      
+}
+      .bio {        
+font-size: 15px;        
+padding: 15px;      
+}      
+.action-button {        
+width: 80%; /* Make buttons wider on small screens */        
+margin: 0 auto; /* Center buttons */      
+}    
+}  
+</style>
+</head>
+<body>  
+<header>    
+    <div class="header-top">
+        <div class="header-logo-container">
+            <img src="logo.jpg" alt="Dipak Lungeli Logo" class="header-logo">
+        </div>
+        <h1>Dipak Lungeli</h1>    
+    </div>
+    <nav>      
+        <a href="dashboard.html">DashBoard</a>      
+        <a href="about.html">About</a>      
+        <a href="projects.html">Projects</a>      
+        <a href="tools.html">Tools</a>      
+        <a href="contact.html">Contact</a>    
+    </nav>  
+</header>  
+<main>    
+<h2>Welcome to My Personal Website</h2>    
+<div class="bio">      
+<p>Hello! I’m <strong>Dipak Lungeli</strong> from Gandaki Province. I’m a passionate <strong>web developer</strong>, <strong>music producer</strong>, and a writer of philosophical and creative content including poems, ghazals, stories, and articles. I explore the intersections of culture, history, AI, and social ideas.</p>      
+<p>On this website, you'll find my personal and professional projects, writings, music productions, and thoughtful insights. My goal is to blend art with technology and present meaningful content that reflects curiosity, identity, and modern creativity.</p>      
+<p>Feel free to explore the different sections using the navigation menu above. Thank you for visiting!</p>    
+</div>    
+
+<div class="buttons-container">      
+<button class="action-button" id="subscribeButtonIndex">Subscribe</button>      
+<button class="action-button" id="likeButtonIndex">Like</button>    
+</div>  
+
+</main>  
+<footer>    
+&copy; 2025 Dipak Lungeli — All Rights Reserved  
+</footer>
+
+<script>  
+// JavaScript for interactive buttons
+document.addEventListener('DOMContentLoaded', () => {    
+    const subscribeButton = document.getElementById('subscribeButtonIndex');    
+    const likeButton = document.getElementById('likeButtonIndex');    
+
+    // Local Storage बाट डेटा लोड गर्ने
+    let isSubscribed = (localStorage.getItem('isSubscribed') === 'true');    
+    let likesCount = Number(localStorage.getItem('likesCount')) || 0; 
+    
+    // बटनहरूको अवस्था अपडेट गर्ने फङ्क्सन
+    function updateSubscribeButton() {      
+        subscribeButton.textContent = isSubscribed ? "Subscribed!" : "Subscribe";      
+        if (isSubscribed) {
+            subscribeButton.classList.add('subscribed');
+        } else {
+            subscribeButton.classList.remove('subscribed');
+            subscribeButton.style.backgroundColor = "#007bff"; // Ensure original blue if unsubscribed
+        }
+    }    
+
+    function updateLikeButton() {      
+        likeButton.textContent = `Like (${likesCount})`;    
+    }  
+
+    // पेज लोड हुँदा सुरुमा बटनहरू अपडेट गर्ने
+    updateSubscribeButton();    
+    updateLikeButton();    
+
+    subscribeButton.addEventListener('click', () => {      
+        isSubscribed = !isSubscribed; // Toggle subscription status      
+        localStorage.setItem('isSubscribed', isSubscribed); // Local Storage मा अपडेट गर्ने
+        updateSubscribeButton();      
+        alert(isSubscribed ? "Thank you for subscribing!" : "You have unsubscribed.");    
+    });    
+
+    likeButton.addEventListener('click', () => {      
+        likesCount++; // Increment likes      
+        localStorage.setItem('likesCount', likesCount); // Local Storage मा अपडेट गर्ने
+        updateLikeButton();      
+        alert(`You liked this page! Total likes: ${likesCount}`);    
+    });    
+
+    // **Local Storage 'storage' event listener:**
+    // यो इभेन्टले एउटै डोमेनमा खुलेका फरक ट्याब वा विन्डोमा Local Storage को डेटा परिवर्तन हुँदा सूचित गर्छ।
+    // यसले गर्दा ड्यासबोर्डबाट डेटा अपडेट हुँदा यहाँ स्वतः देखिन्छ।
+    window.addEventListener('storage', (event) => {
+        if (event.key === 'likesCount') {
+            likesCount = Number(event.newValue);
+            updateLikeButton();
+        }
+        if (event.key === 'isSubscribed') {
+            isSubscribed = (event.newValue === 'true');
+            updateSubscribeButton();
+        }
+    });
+});
+</script>
+
+<script>
+  // =============================================
+  // START: Code for Page Time Tracking
+  const pageName = "Home"; // यहाँ यो पेजको नाम राखिएको छ
+
+  let startTime = Date.now(); // पेज लोड हुने बित्तिकै समय नोट गर्नुहोस्।
+
+  // जब प्रयोगकर्ताले पेज छोड्छ (ब्राउजर बन्द गर्छ, अर्को पेजमा जान्छ, आदि)
+  window.addEventListener('beforeunload', () => {
+      const duration = Date.now() - startTime; // पेजमा बिताएको समय गणना गर्नुहोस्।
+      
+      // LocalStorage बाट पहिले नै बचत भएको समय ल्याउनुहोस् (यदि छ भने)
+      let existingTime = Number(localStorage.getItem(`page:${pageName}`)) || 0;
+      
+      // नयाँ समयलाई पहिलेको समयमा जोडेर बचत गर्नुहोस्।
+      localStorage.setItem(`page:${pageName}`, existingTime + duration);
+  });
+  // END: Code for Page Time Tracking
+  // =============================================
+</script>
+</body>
+</html>

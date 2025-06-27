@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bar Length Equalizer</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f0f0;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 850px;
+      margin: 2rem auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #0d47a1;
+      margin-bottom: 0.5rem;
+    }
+    p {
+      text-align: center;
+      font-size: 1rem;
+      color: #444;
+    }
+    textarea {
+      width: 100%;
+      height: 180px;
+      padding: 1rem;
+      font-size: 1rem;
+      margin-top: 1.2rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      resize: vertical;
+    }
+    .result {
+      margin-top: 1.5rem;
+      background: #eef5ff;
+      padding: 1rem;
+      border-radius: 8px;
+    }
+    .bar-line {
+      margin-bottom: 0.8rem;
+      padding: 0.6rem;
+      border-radius: 6px;
+      line-height: 1.6;
+    }
+    .equal {
+      background-color: #e0f8e9;
+      color: green;
+    }
+    .near {
+      background-color: #fff4cc;
+      color: #b36b00;
+    }
+    .unequal {
+      background-color: #ffe0e0;
+      color: red;
+    }
+    .stats {
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+    .copy-btn {
+      margin-top: 1rem;
+      background-color: #0d47a1;
+      color: white;
+      border: none;
+      padding: 0.6rem 1rem;
+      font-size: 0.9rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .copy-btn:hover {
+      background-color: #093170;
+    }
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      padding: 1rem;
+      background-color: #0d47a1;
+      color: white;
+    }
+    @media (max-width: 600px) {
+      .container {
+        margin: 1rem;
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Bar Length Equalizer</h1>
+    <p>Check line balance in your lyrics using character and syllable analysis.</p>
+    <textarea id="lyricsInput" placeholder="Enter your lyrics here, one bar per line..."></textarea>
+    <button class="copy-btn" onclick="copyResult()">Copy Result</button>
+    <div id="analysisResult" class="result"></div>
+  </div>
+
+  <footer>
+    &copy; 2025 Dipak Lungeli — All Rights Reserved
+  </footer>
+
+  <script>
+    const input = document.getElementById('lyricsInput');
+    const result = document.getElementById('analysisResult');
+
+    function countSyllables(word) {
+      word = word.toLowerCase().replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '')
+                               .replace(/^y/, '');
+      const matches = word.match(/[aeiouy]{1,2}/g);
+      return matches ? matches.length : 1;
+    }
+
+    function totalSyllables(line) {
+      return line.trim().split(/\s+/).map(countSyllables).reduce((a, b) => a + b, 0);
+    }
+
+    function analyzeBars(text) {
+      const lines = text.trim().split('\n').filter(line => line.trim() !== '');
+      if (lines.length === 0) return '';
+
+      const lengths = lines.map(line => line.trim().length);
+      const syllables = lines.map(line => totalSyllables(line));
+      const avgLen = Math.round(lengths.reduce((a,b) => a+b, 0) / lengths.length);
+      const avgSyl = Math.round(syllables.reduce((a,b) => a+b, 0) / syllables.length);
+
+      let stats = `<div class="stats"><strong>Total Bars:</strong> ${lines.length} | <strong>Avg Length:</strong> ${avgLen} chars | <strong>Avg Syllables:</strong> ${avgSyl}</div>`;
+      
+      let analysis = lines.map((line, i) => {
+        const len = lengths[i];
+        const syl = syllables[i];
+        const lenDiff = Math.abs(len - avgLen);
+        const sylDiff = Math.abs(syl - avgSyl);
+
+        let status = 'equal';
+        if (lenDiff <= 2 && sylDiff <= 1) status = 'equal';
+        else if (lenDiff <= 5 && sylDiff <= 3) status = 'near';
+        else status = 'unequal';
+
+        return `<div class="bar-line ${status}">[${len} chars | ${syl} syll] - ${line}</div>`;
+      }).join('');
+
+      return stats + analysis;
+    }
+
+    input.addEventListener('input', () => {
+      result.innerHTML = analyzeBars(input.value);
+    });
+
+    function copyResult() {
+      const text = result.innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Result copied to clipboard!");
+      });
+    }
+  </script>
+
+  <script>
+    // =============================================
+    // START: Code for Page Time Tracking
+    const pageName = "Bar Length Equalizer"; // यहाँ यो पेजको नाम राखिएको छ
+
+    let startTime = Date.now(); // पेज लोड हुने बित्तिकै समय नोट गर्नुहोस्।
+
+    // जब प्रयोगकर्ताले पेज छोड्छ (ब्राउजर बन्द गर्छ, अर्को पेजमा जान्छ, आदि)
+    window.addEventListener('beforeunload', () => {
+        const duration = Date.now() - startTime; // पेजमा बिताएको समय गणना गर्नुहोस्।
+        
+        // LocalStorage बाट पहिले नै बचत भएको समय ल्याउनुहोस् (यदि छ भने)
+        let existingTime = Number(localStorage.getItem(`page:${pageName}`)) || 0;
+        
+        // नयाँ समयलाई पहिलेको समयमा जोडेर बचत गर्नुहोस्।
+        localStorage.setItem(`page:${pageName}`, existingTime + duration);
+    });
+    // END: Code for Page Time Tracking
+    // =============================================
+  </script>
+</body>
+</html>

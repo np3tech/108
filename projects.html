@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects - Dipak Lungeli</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    header {
+      background-color: #002244;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+
+    .project {
+      background-color: white;
+      padding: 25px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    .project h3 {
+      color: #002244;
+      margin-bottom: 10px;
+    }
+
+    .project p {
+      line-height: 1.6;
+      text-align: justify;
+    }
+
+    footer {
+      background-color: #222;
+      color: #aaa;
+      text-align: center;
+      padding: 15px 0;
+      margin-top: 50px;
+    }
+
+    @media (max-width: 768px) {
+      nav a {
+        display: block;
+        margin: 10px 0;
+      }
+
+      .project {
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 24px;
+      }
+
+      .project h3 {
+        font-size: 18px;
+      }
+
+      .project p {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>My Projects</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="tools.html">Tools</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="project">
+      <h3>Personal Website (This One!)</h3>
+      <p>I designed and developed this personal website from scratch using HTML and CSS. The site is fully responsive, user-friendly, and presents my work, interests, and creative vision as a developer, writer, and music producer.</p>
+    </div>
+
+    <div class="project">
+      <h3>Accessible Notepad App (Python)</h3>
+      <p>I developed a notepad application in Python focused on accessibility for screen reader users. It supports keyboard navigation, text-to-speech, and adjustable font sizes for visually impaired individuals.</p>
+    </div>
+
+    <div class="project">
+      <h3>Music Production (x-Beat Official)</h3>
+      <p>As “x-Beat Official,” I produce expressive, poetic music blending emotional storytelling and rhythm. I use FL Studio and REAPER to create instrumental rap beats and lyrical compositions shared on YouTube and other platforms.</p>
+    </div>
+
+    <div class="project">
+      <h3>Romanized Nepali to Unicode Converter</h3>
+      <p>I'm building a GUI-based Python application that converts Romanized Nepali lyrics to Nepali Unicode. It also generates rhythmically consistent alternatives for songwriting and poetic experiments.</p>
+    </div>
+
+    <div class="project">
+      <h3>Online Presence Tracker for Friends</h3>
+      <p>This Python desktop app gathers updates from friends’ social media (YouTube, Facebook, TikTok), summarizes new posts, likes, and comments, and presents them in a clean, easy-to-share interface.</p>
+    </div>
+
+    <div class="project">
+      <h3>Lua Extension for Jieshuo+ Screen Reader</h3>
+      <p>I’ve developed Lua scripts for the Jieshuo+ screen reader on Android to enhance accessibility features like voice feedback and interaction, inspired by NVDA for desktop users.</p>
+    </div>
+
+    <div class="project">
+      <h3>Philosophical Writing & Digital Publishing</h3>
+      <p>I write on psychology, expectation, human values, and philosophical depth. My poems, ghazals, and reflective articles are published via my Facebook page and presented in multimedia form on YouTube.</p>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 Dipak Lungeli — All Rights Reserved
+  </footer>
+
+  <script>
+    // =============================================
+    // START: Code for Page Time Tracking
+    const pageName = "Projects"; // यहाँ यो पेजको नाम राखिएको छ
+
+    let startTime = Date.now(); // पेज लोड हुने बित्तिकै समय नोट गर्नुहोस्।
+
+    // जब प्रयोगकर्ताले पेज छोड्छ (ब्राउजर बन्द गर्छ, अर्को पेजमा जान्छ, आदि)
+    window.addEventListener('beforeunload', () => {
+        const duration = Date.now() - startTime; // पेजमा बिताएको समय गणना गर्नुहोस्।
+        
+        // LocalStorage बाट पहिले नै बचत भएको समय ल्याउनुहोस् (यदि छ भने)
+        let existingTime = Number(localStorage.getItem(`page:${pageName}`)) || 0;
+        
+        // नयाँ समयलाई पहिलेको समयमा जोडेर बचत गर्नुहोस्।
+        localStorage.setItem(`page:${pageName}`, existingTime + duration);
+    });
+    // END: Code for Page Time Tracking
+    // =============================================
+  </script>
+</body>
+</html>

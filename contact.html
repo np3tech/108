@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact - Dipak Lungeli</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+
+    header {
+      background-color: #002244;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .intro {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      color: #555;
+    }
+
+    .contact-info {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-item {
+      margin-bottom: 1.5rem;
+      font-size: 1.1rem;
+    }
+
+    .contact-item strong {
+      display: inline-block;
+      width: 100px;
+    }
+
+    .contact-item a {
+      color: #3498db;
+      text-decoration: none;
+    }
+
+    .contact-item a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      background-color: #222;
+      color: #aaa;
+      text-align: center;
+      padding: 15px 0;
+      margin-top: 50px;
+    }
+
+    @media (max-width: 768px) {
+      nav a {
+        display: block;
+        margin: 10px 0;
+      }
+
+      .contact-item strong {
+        width: auto;
+        display: block;
+        margin-bottom: 5px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .contact-item {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Contact Me</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="tools.html">Tools</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <p class="intro">
+      Feel free to connect with me through the following platforms. Whether it's collaboration, queries, or just to say hi — you're always welcome!
+    </p>
+    <div class="contact-info">
+      <div class="contact-item">
+        <strong>Email:</strong> 
+        <a href="mailto:dipaklungeli345@gmail.com">dipaklungeli345@gmail.com</a>
+      </div>
+      <div class="contact-item">
+        <strong>YouTube:</strong> 
+        <a href="https://youtube.com/@x-beat555?si=uT-xLgmagktjtOQ2" target="_blank">x-Beat Official on YouTube</a>
+      </div>
+      <div class="contact-item">
+        <strong>TikTok:</strong> 
+        <a href="https://www.tiktok.com/@anantadip7?_t=ZS-8wLFZ4dmi2h&_r=1" target="_blank">@anantadip7 on TikTok</a>
+      </div>
+      <div class="contact-item">
+        <strong>Facebook:</strong> 
+        <a href="https://www.facebook.com/share/1BQr1wgXPB/" target="_blank">Aviral Drishti (Facebook Page)</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 Dipak Lungeli — All Rights Reserved
+  </footer>
+
+  <script>
+    // =============================================
+    // START: Code for Page Time Tracking
+    const pageName = "Contact"; // यो पेजको नाम यहाँ राखिएको छ
+
+    let startTime = Date.now(); // पेज लोड हुने बित्तिकै समय नोट गर्नुहोस्।
+
+    // जब प्रयोगकर्ताले पेज छोड्छ (ब्राउजर बन्द गर्छ, अर्को पेजमा जान्छ, आदि)
+    window.addEventListener('beforeunload', () => {
+        const duration = Date.now() - startTime; // पेजमा बिताएको समय गणना गर्नुहोस्।
+        
+        // LocalStorage बाट पहिले नै बचत भएको समय ल्याउनुहोस् (यदि छ भने)
+        let existingTime = Number(localStorage.getItem(`page:${pageName}`)) || 0;
+        
+        // नयाँ समयलाई पहिलेको समयमा जोडेर बचत गर्नुहोस्।
+        localStorage.setItem(`page:${pageName}`, existingTime + duration);
+    });
+    // END: Code for Page Time Tracking
+    // =============================================
+  </script>
+</body>
+</html>

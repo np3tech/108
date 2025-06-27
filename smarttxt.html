@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Smart Text Analyzer</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #e3f2fd;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      box-sizing: border-box;
+    }
+
+    h1 {
+      text-align: center;
+      color: #0d47a1;
+      margin-bottom: 1.5rem;
+    }
+
+    p {
+      line-height: 1.6;
+      color: #333;
+      margin-top: 0;
+    }
+
+    textarea {
+      width: 100%;
+      height: 200px;
+      font-size: 1.1rem;
+      padding: 1.2rem;
+      border: 1px solid #c0c0c0;
+      border-radius: 8px;
+      resize: vertical;
+      box-sizing: border-box;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    textarea:focus {
+      border-color: #0d47a1;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.5rem;
+      gap: 1rem;
+    }
+
+    .controls button {
+      flex-grow: 1;
+      padding: 0.8rem 1.5rem;
+      font-size: 1.1rem;
+      background: #0d47a1;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .controls button:hover {
+      background: #1565c0;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .results {
+      margin-top: 2rem;
+      font-size: 1.1rem;
+      background: #f8fcfd;
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid #e0f2f7;
+      min-height: 150px;
+    }
+
+    .results p {
+      margin-bottom: 0.8rem;
+    }
+
+    .results ul {
+      padding-left: 20px;
+      margin-top: 0.8rem;
+    }
+
+    .results li {
+      margin-bottom: 0.4rem;
+    }
+
+    .highlight {
+      font-weight: bold;
+      color: #1b5e20;
+    }
+
+    .reading-time {
+      color: #4a148c;
+      font-weight: bold;
+    }
+
+    .readability-score {
+      color: #d32f2f; /* Red color */
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      color: #777;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        margin: 1.5rem;
+        padding: 1.8rem;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+      textarea {
+        height: 180px;
+        font-size: 1rem;
+      }
+      .controls {
+        flex-direction: column;
+      }
+      .results,
+      .controls button {
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        margin: 1rem;
+        padding: 1rem;
+        border-radius: 8px;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+      textarea {
+        height: 150px;
+        padding: 0.8rem;
+      }
+      .results {
+        padding: 1rem;
+      }
+      .controls button {
+        padding: 0.6rem 1rem;
+        font-size: 0.95rem;
+      }
+      footer {
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Smart Text Analyzer</h1>
+    <p>Analyze your text to get word count, reading time, unique & repeated words, readability score, and more!</p>
+
+    <textarea id="textInput" placeholder="Type or paste your text here..."></textarea>
+
+    <div class="controls">
+      <button onclick="analyzeText()">Analyze</button>
+      <button onclick="clearText()">Clear</button>
+    </div>
+
+    <div id="analysis" class="results">
+      <p><span class="highlight">Please enter text and click Analyze.</span></p>
+    </div>
+
+    <footer>
+      © 2025 Dipak Lungeli — All rights reserved.
+    </footer>
+  </div>
+
+  <script>
+    function analyzeText() {
+      const text = document.getElementById("textInput").value.trim();
+      const analysisDiv = document.getElementById("analysis");
+
+      if (text === "") {
+        analysisDiv.innerHTML = '<p><span class="highlight">Please enter text and click Analyze.</span></p>';
+        return;
+      }
+
+      const words = text.match(/\b\w+\b/g) || [];
+      const characters = text.length;
+      const charactersNoSpace = text.replace(/\s/g, '').length;
+      const paragraphs = text.split(/\n{2,}/).filter(p => p.trim().length > 0).length;
+      const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
+
+      // Word frequency map
+      const wordMap = {};
+      words.forEach(word => {
+        const w = word.toLowerCase();
+        wordMap[w] = (wordMap[w] || 0) + 1;
+      });
+
+      const uniqueWords = Object.keys(wordMap).length;
+      const sortedWords = Object.entries(wordMap)
+                                .sort((a, b) => b[1] - a[1])
+                                .slice(0, 5);
+
+      // Estimate reading time (assuming 200 wpm)
+      const readingTime = Math.ceil(words.length / 200);
+
+      // Simplified Readability Score (Flesch-Kincaid approximation)
+      const avgWordsPerSentence = sentences > 0 ? (words.length / sentences) : 0;
+      const avgSyllablesPerWord = 2.0; // Estimated average for Nepali or similar languages
+      let readabilityScore = 0;
+      if (words.length > 0) {
+        readabilityScore = 206.835 - 1.015 * avgWordsPerSentence - 84.6 * avgSyllablesPerWord;
+      }
+      readabilityScore = Math.max(0, Math.min(100, readabilityScore)).toFixed(2);
+
+      let readingLevel = "Unclear";
+      if (readabilityScore >= 70) {
+        readingLevel = "Easy";
+      } else if (readabilityScore >= 50) {
+        readingLevel = "Medium";
+      } else if (readabilityScore >= 30) {
+        readingLevel = "Somewhat Difficult";
+      } else {
+        readingLevel = "Very Difficult";
+      }
+
+      const html = `
+        <p><span class="highlight">Total words:</span> ${words.length}</p>
+        <p><span class="highlight">Characters (with spaces):</span> ${characters}</p>
+        <p><span class="highlight">Characters (without spaces):</span> ${charactersNoSpace}</p>
+        <p><span class="highlight">Sentences:</span> ${sentences}</p>
+        <p><span class="highlight">Paragraphs:</span> ${paragraphs}</p>
+        <p><span class="highlight">Unique words:</span> ${uniqueWords}</p>
+        <p class="reading-time">Estimated reading time: ${readingTime} minute(s)</p>
+        <p class="readability-score">Readability score: ${readabilityScore} (${readingLevel})</p>
+        <p><span class="highlight">Top 5 most frequent words:</span></p>
+        <ul>
+          ${
+            sortedWords.length > 0
+              ? sortedWords.map(([word, count]) => `<li>${word}: ${count} time(s)</li>`).join("")
+              : "<li>No words found</li>"
+          }
+        </ul>
+      `;
+
+      analysisDiv.innerHTML = html;
+    }
+
+    function clearText() {
+      document.getElementById("textInput").value = "";
+      document.getElementById("analysis").innerHTML = '<p><span class="highlight">Please enter text and click Analyze.</span></p>';
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("analysis").innerHTML = '<p><span class="highlight">Please enter text and click Analyze.</span></p>';
+    });
+
+    // =============================================
+    // START: Code for Page Time Tracking
+    const pageName = "Smart Text Analyzer"; // यहाँ यो पेजको नाम राखिएको छ
+
+    let startTime = Date.now(); // पेज लोड हुने बित्तिकै समय नोट गर्नुहोस्।
+
+    // जब प्रयोगकर्ताले पेज छोड्छ (ब्राउजर बन्द गर्छ, अर्को पेजमा जान्छ, आदि)
+    window.addEventListener('beforeunload', () => {
+        const duration = Date.now() - startTime; // पेजमा बिताएको समय गणना गर्नुहोस्।
+        
+        // LocalStorage बाट पहिले नै बचत भएको समय ल्याउनुहोस् (यदि छ भने)
+        let existingTime = Number(localStorage.getItem(`page:${pageName}`)) || 0;
+        
+        // नयाँ समयलाई पहिलेको समयमा जोडेर बचत गर्नुहोस्।
+        localStorage.setItem(`page:${pageName}`, existingTime + duration);
+    });
+    // END: Code for Page Time Tracking
+    // =============================================
+  </script>
+</body>
+</html>
